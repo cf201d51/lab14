@@ -7,10 +7,14 @@ var Cart = function(items) {
 };
 
 Cart.prototype.addItem = function(product, quantity) {
+  var cartItem = new CartItem (product, quantity);
+  this.items.push(cartItem);
   // TODO: Fill in this instance method to create a new CartItem and add it to this.items
 };
 
 Cart.prototype.saveToLocalStorage = function() {
+  var str = JSON.stringify(this.items);
+  localStorage.setItem('cart', str);
   // TODO: Fill in this instance method to save the contents of the cart to localStorage
 };
 
@@ -55,5 +59,47 @@ function generateCatalog() {
   new Product('assets/wine-glass.jpg', 'Wine Glass');
 }
 
+
+/**--------------------------------
+ * This is a helper function to add an element with given tag name optional text, class name, and id to the given parent
+ *
+ * @param {*} parent
+ * @param {*} tagName
+ * @param {*} text
+ * @param {*} className
+ * @param {*} id
+ * @returns
+ */
+function addElement(parent, tagName, text, className, id) {
+  var newElement = document.createElement(tagName);
+  if (text) {
+    newElement.textContent = text;
+  }
+  if (className) {
+    newElement.className = className;
+  }
+  if (id) {
+    newElement.id = id;
+  }
+  if (parent) {
+    parent.appendChild(newElement);
+  }
+  return newElement;
+}
+
+/**
+ * Removes all child elements from the given element.
+ *
+ * The method used is faster than ```element.innerHTML = ''``` according to
+ * https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+ *
+ * @param {*} element
+ */
+function clearElement(element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+}
+//-----------------------
 // Initialize the app by creating the big list of products with images and names
 generateCatalog();
